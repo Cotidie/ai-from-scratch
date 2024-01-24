@@ -1,11 +1,21 @@
 from typing import List
 from numpy import ndarray
-from .layer import Layer
+from .layer import Layer, InitMethod
 
-# Deep Neural Network를 나타내는 클래스
 class Network:
+    """Deep Neural Network를 나타내는 클래스"""
     def __init__(self, layers: List[Layer]) -> None:
         self.layers = layers
+
+    def initialize(self, method: InitMethod):
+        """파라미터를 지정된 방식으로 초기화한다.
+
+        Args:
+            method (InitMethod): 파라미터 초기화 방식 (He, Gaussian 등)
+        """
+        if method == InitMethod.HE:
+            for layer in self.layers:
+                layer.init_parameters_he()
 
     def train(self,
               x_train: ndarray, 
