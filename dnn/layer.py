@@ -3,6 +3,8 @@ from math import sqrt
 from enum import Enum
 from .activation import Activation, Sigmoid
 
+# TODO: 파라미터 초기화 클래스 분리
+
 class InitMethod(Enum):
     GAUSSIAN = 1        # N(0, 1) 가우시안 분포로 초기화
     HE       = 2        # He Initialization (for ReLU)
@@ -16,11 +18,11 @@ class Layer:
         def __init__(self, inputs: int, units: int):
             self.inputs = inputs
             self.units = units
-            self.weights = None
 
     def __init__(self, inputs: int, units: int, activation: Activation=Sigmoid()) -> None:
         self.size = self.Size(inputs, units)
         self.activation = activation
+        self.weights = None
 
     def init_parameters_gaussian(self) -> None:
         """모든 파라미터를 가우시안 분포 N(0, 1)로 초기화한다."""
@@ -46,3 +48,21 @@ class Layer:
 
         self.weights = np.random.rand(self.size.units, self.size.inputs)
         self.weights = lower + self.weights * (upper - lower)
+
+    def forward_pass(self, input: np.ndarray) -> (np.ndarray, np.ndarray):
+        """1개 데이터 샘플에 대해 선형 변환, 활성 함수를 계산한다. 입력수 i, 유닛 수 u에 대해
+
+        Args:
+            input (np.ndarray): 1개 데이터 샘플의 입력 벡터 (i x 1)
+
+        Returns:
+            (np.ndarray, np.ndarray): 선형변환 a_u, 활성함수 z_u
+        """
+        linear_transform = np.dot(self.weights, input)      # u x 1
+        activation = self.activation.calc(linear_transform) # u x 1
+
+        return linear_transform, activation
+
+    def backpropagation(self):
+        pass
+

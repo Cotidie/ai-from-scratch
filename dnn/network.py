@@ -39,7 +39,15 @@ class Network:
         """
         
 
-    def forward_pass(self):
+    def forward_pass(self, x_sample: ndarray) -> ndarray:
+        """1개 데이터 샘플에 대해 결과값을 계산한다.
+
+        Args:
+            x_sample (ndarray): 훈련 데이터의 입력 벡터
+
+        Returns:
+            ndarray: _description_
+        """
         pass
 
     def backpropagation(self):
