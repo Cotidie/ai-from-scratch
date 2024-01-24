@@ -24,17 +24,18 @@ class Layer:
 
     def init_parameters_gaussian(self) -> None:
         """모든 파라미터를 가우시안 분포 N(0, 1)로 초기화한다."""
-        self.weights = np.random.randn(self.size.inputs)
+        self.weights = np.random.randn(self.size.units, self.size.inputs)
 
     def init_parameters_he(self) -> None:
         """he 초기화 방식으로 파라미터를 초기화한다.
 
         입력의 개수 n에 대하여 각 파라미터를 가우시안 분포 N(0, 2/n)으로 초기화한다.
         """
-        self.weights = np.random.randn(self.size.inputs)
         std = sqrt(2 / self.size.inputs)
-        self.weights *= std
 
+        self.weights = np.random.randn(self.size.units, self.size.inputs)
+        self.weights *= std
+        
     def init_parameters_xavier(self) -> None:
         """Xavior 방식으로 파라미터를 초기화한다.
 
@@ -42,6 +43,6 @@ class Layer:
         """
         bound = 1 / sqrt(self.size.inputs)
         lower, upper = -1 * bound, bound
-        
-        self.weights = np.random.rand(self.size.inputs)
+
+        self.weights = np.random.rand(self.size.units, self.size.inputs)
         self.weights = lower + self.weights * (upper - lower)

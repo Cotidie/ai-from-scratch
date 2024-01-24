@@ -7,8 +7,8 @@ class TestLayer:
         layer.init_parameters_he()
         
         expectedStd = sqrt(2 / layer.size.inputs)
-        epsilon = 0.1
+        epsilon = 0.01
         std = layer.weights.std()
         
-        assert len(layer.weights) == layer.size.inputs
+        assert layer.weights.shape == (layer.size.units, layer.size.inputs)
         assert (std < expectedStd+epsilon and std > expectedStd-epsilon) 

@@ -16,6 +16,12 @@ class Network:
         if method == InitMethod.HE:
             for layer in self.layers:
                 layer.init_parameters_he()
+        if method == InitMethod.GAUSSIAN:
+            for layer in self.layers:
+                layer.init_parameters_gaussian()
+        if method == InitMethod.XAVIER:
+            for layer in self.layers:
+                layer.init_parameters_xavier()
 
     def train(self,
               x_train: ndarray, 

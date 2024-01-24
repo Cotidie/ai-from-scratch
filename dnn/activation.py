@@ -1,19 +1,23 @@
-from numpy import ndarray, exp
+from numpy import ndarray, exp, ones
 
 class Activation:
     def calc(self, x: ndarray) -> ndarray:
-        pass
+        raise NotImplementedError("Calc 함수를 구현해야 합니다.")
 
     def derivative(self, x: ndarray) -> ndarray:
-        pass
-    
-class Sigmoid(Activation):
-    def __init__(self) -> None:
-        pass
+        raise NotImplementedError("derivative 함수를 구현해야 합니다.")
 
-    def calc(self, x: ndarray):
+class Sigmoid(Activation):
+    def calc(self, x: ndarray) -> ndarray:
         return 1 / (1+exp(-x))
     
-    def derivative(self, x: ndarray):
+    def derivative(self, x: ndarray) -> ndarray:
         applied = self.calc(x)
         return applied * (1 - applied)
+    
+class Identity(Activation):
+    def calc(self, x: ndarray) -> ndarray:
+        return x
+    
+    def derivative(self, x: ndarray) -> ndarray:
+        return ones(x.shape)
