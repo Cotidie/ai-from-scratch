@@ -1,11 +1,13 @@
 from typing import List
 from numpy import ndarray
 from .layer import Layer, InitMethod
+from .loss_function import LossFunction
 
 class Network:
     """Deep Neural Network를 나타내는 클래스"""
-    def __init__(self, layers: List[Layer]) -> None:
+    def __init__(self, layers: List[Layer], loss: LossFunction) -> None:
         self.layers = layers
+        self.loss = loss
 
     def initialize(self, method: InitMethod):
         """파라미터를 지정된 방식으로 초기화한다.
@@ -52,7 +54,7 @@ class Network:
         """
         for layer in self.layers:
             (pre_activation, activation) = layer.forward_pass()
-            
+
 
     def backpropagation(self):
         pass

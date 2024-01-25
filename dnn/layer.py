@@ -24,6 +24,7 @@ class Layer:
         self.activation = activation
         self.weights = None
 
+
     def init_parameters_gaussian(self) -> None:
         """모든 파라미터를 가우시안 분포 N(0, 1)로 초기화한다."""
         self.weights = np.random.randn(self.size.units, self.size.inputs)
@@ -63,10 +64,29 @@ class Layer:
 
         return linear_transform, activation
 
-    def backpropagation(self, update):
-        """_summary_
-
+    def backpropagation(
+            self, 
+            pre_activation: np.ndarray, 
+            next_weights: np.ndarray, 
+            next_grads: np.ndarray
+        ) -> np.ndarray:
+        """에러 함수에 대해 현재 레이어의 pre-activation의 그라디언트를 계산한다. 이는 Chain Rule을 따른다.
+            출력의 개수 o, 유닛의 개수 u에 대하여
         Args:
-            update (_type_): _description_
+            pre_activation (np.ndarray): 각 유닛의 선형변환 값 (u x 1) 
+            next_weights (np.ndarray): 다음 레이어가 가진 파라미터 (o x u)
+            next_grads (np.ndarray): 다음 레이어의 에러 시그널 (o x 1)
+
+        Returns:
+            np.ndarray: 현재 레이어의 에러 시그널 (u x 1)
         """
+
+        error_signal = np.dot(
+            np.transpose(next_weights),  # z x u
+            next_grads                   # u x 1
+        )                                # z x 1
+        error_signal *= self.activation.derivative(pre_activation)
+
+        return error_signal
+
 
