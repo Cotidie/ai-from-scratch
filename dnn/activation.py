@@ -1,4 +1,4 @@
-from numpy import ndarray, exp, ones
+from numpy import ndarray, exp, ones, sum
 
 class Activation:
     def calc(self, x: ndarray) -> ndarray:
@@ -14,6 +14,15 @@ class Sigmoid(Activation):
     def derivative(self, x: ndarray) -> ndarray:
         applied = self.calc(x)
         return applied * (1 - applied)
+
+class Softmax(Activation):
+    def calc(self, x: ndarray) -> ndarray:
+        exps = exp(x-x.max())
+        return exps / sum(exps)
+    
+    def derivative(self, x: ndarray) -> ndarray:
+        applied = self.calc(x)
+        return applied * (1-applied)
     
 class Identity(Activation):
     def calc(self, x: ndarray) -> ndarray:

@@ -63,6 +63,10 @@ class Layer:
 
         return linear_transform, activation
 
-    def backpropagation(self):
-        pass
+    def backpropagation(self, update):
+        """_summary_
+
+        Args:
+            update (_type_): _description_
+        """
 

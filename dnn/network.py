@@ -37,6 +37,8 @@ class Network:
             epoch (int):       데이터셋 반복 학습 횟수 (기본 10)
             learnRate (float): 학습률 (기본 0.001)
         """
+
+
         
 
     def forward_pass(self, x_sample: ndarray) -> ndarray:
@@ -48,7 +50,9 @@ class Network:
         Returns:
             ndarray: _description_
         """
-        pass
+        for layer in self.layers:
+            (pre_activation, activation) = layer.forward_pass()
+            
 
     def backpropagation(self):
         pass
