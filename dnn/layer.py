@@ -19,10 +19,18 @@ class Layer:
             self.inputs = inputs
             self.units = units
 
+    class Cache:
+        """Forward, Backward Pass 도중 계산된 값을 보관한다."""
+        def __init__(self) -> None:
+            self.pre_activation = None
+            self.activated = None
+            self.error_signal = None
+
     def __init__(self, inputs: int, units: int, activation: Activation=Sigmoid()) -> None:
         self.size = self.Size(inputs, units)
         self.activation = activation
         self.weights = None
+        self.cache = self.Cache()
 
 
     def init_parameters_gaussian(self) -> None:
@@ -50,19 +58,19 @@ class Layer:
         self.weights = np.random.rand(self.size.units, self.size.inputs)
         self.weights = lower + self.weights * (upper - lower)
 
-    def forward_pass(self, input: np.ndarray) -> (np.ndarray, np.ndarray):
-        """1개 데이터 샘플에 대해 선형 변환, 활성 함수를 계산한다. 입력수 i, 유닛 수 u에 대해
+    def forward_pass(self, input: np.ndarray):
+        """1개 데이터 샘플에 대해 선형 변환, 활성 함수를 계산한다. 
+        
+        입력수 i, 유닛 수 u에 대해 선형변환 a_u, 활성함수 z_u를 레이어에 저장한다.
 
         Args:
             input (np.ndarray): 1개 데이터 샘플의 입력 벡터 (i x 1)
-
-        Returns:
-            (np.ndarray, np.ndarray): 선형변환 a_u, 활성함수 z_u
         """
         linear_transform = np.dot(self.weights, input)      # u x 1
         activation = self.activation.calc(linear_transform) # u x 1
 
-        return linear_transform, activation
+        self.cache.pre_activation = linear_transform 
+        self.cache.activated = activation
 
     def backpropagation(
             self, 
@@ -71,14 +79,11 @@ class Layer:
             next_grads: np.ndarray
         ) -> np.ndarray:
         """에러 함수에 대해 현재 레이어의 pre-activation의 그라디언트를 계산한다. 이는 Chain Rule을 따른다.
-            출력의 개수 o, 유닛의 개수 u에 대하여
+            출력의 개수 o, 유닛의 개수 u에 대하여 현재 레이어의 에러 시그널 (u x 1)을 self.cache에 캐싱한다.
         Args:
             pre_activation (np.ndarray): 각 유닛의 선형변환 값 (u x 1) 
             next_weights (np.ndarray): 다음 레이어가 가진 파라미터 (o x u)
             next_grads (np.ndarray): 다음 레이어의 에러 시그널 (o x 1)
-
-        Returns:
-            np.ndarray: 현재 레이어의 에러 시그널 (u x 1)
         """
 
         error_signal = np.dot(
@@ -86,7 +91,6 @@ class Layer:
             next_grads                   # u x 1
         )                                # z x 1
         error_signal *= self.activation.derivative(pre_activation)
-
-        return error_signal
+        self.cache.error_signal = error_signal
 
 

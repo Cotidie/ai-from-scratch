@@ -1,5 +1,5 @@
 from typing import List
-from numpy import ndarray
+from numpy import ndarray, zeros
 from .layer import Layer, InitMethod
 from .loss_function import LossFunction
 
@@ -39,25 +39,12 @@ class Network:
             epoch (int):       데이터셋 반복 학습 횟수 (기본 10)
             learnRate (float): 학습률 (기본 0.001)
         """
+        # 1. 레이어별 pre-activation, output 값을 기록한다.
+        forward_values = zeros((len(self.layers), ))
+        # 2. backpropagation을 위해 레이어별 에러 시그널을 기록한다.
+
+        # 3. 파라미터를 업데이트한다.
 
 
-        
-
-    def forward_pass(self, x_sample: ndarray) -> ndarray:
-        """1개 데이터 샘플에 대해 결과값을 계산한다.
-
-        Args:
-            x_sample (ndarray): 훈련 데이터의 입력 벡터
-
-        Returns:
-            ndarray: _description_
-        """
-        for layer in self.layers:
-            (pre_activation, activation) = layer.forward_pass()
-
-
-    def backpropagation(self):
-        pass
-
-    def test_accuracy(self):
+    def test_accuracy(self, x_test: ndarray, y_test: ndarray):
         pass

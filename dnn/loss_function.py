@@ -25,7 +25,9 @@ class CrossEntropy(LossFunction):
         Returns:
             float: Loss 함수의 값
         """
-        return -np.dot(truth, np.exp(predict))
+        positives = -np.dot(truth, np.log(predict))
+        negatives = -np.dot(1-truth, np.log(1-predict))
+        return positives + negatives
 
 
     def derivative(

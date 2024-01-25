@@ -2,7 +2,7 @@ from numpy import ndarray, exp, ones, sum
 
 class Activation:
     def calc(self, x: ndarray) -> ndarray:
-        raise NotImplementedError("Calc 함수를 구현해야 합니다.")
+        raise NotImplementedError("calc 함수를 구현해야 합니다.")
 
     def derivative(self, x: ndarray) -> ndarray:
         raise NotImplementedError("derivative 함수를 구현해야 합니다.")
