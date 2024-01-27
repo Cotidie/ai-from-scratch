@@ -2,6 +2,7 @@ import numpy as np
 from math import sqrt
 from enum import Enum
 from .activation import Activation, Sigmoid
+from .loss_function import LossFunction
 
 # TODO: 파라미터 초기화 클래스 분리
 
@@ -12,7 +13,6 @@ class InitMethod(Enum):
 
 class Layer:
     """은닉층을 나타내는 클래스"""
-
     class Size:
         """레이어의 입력, 출력 크기를 나타내는 데이터 클래스"""
         def __init__(self, inputs: int, units: int):
@@ -72,16 +72,16 @@ class Layer:
         self.cache.pre_activation = linear_transform 
         self.cache.activated = activation
 
+        return activation
+
     def backpropagation(
             self, 
-            pre_activation: np.ndarray, 
             next_weights: np.ndarray, 
             next_grads: np.ndarray
         ) -> np.ndarray:
         """에러 함수에 대해 현재 레이어의 pre-activation의 그라디언트를 계산한다. 이는 Chain Rule을 따른다.
             출력의 개수 o, 유닛의 개수 u에 대하여 현재 레이어의 에러 시그널 (u x 1)을 self.cache에 캐싱한다.
         Args:
-            pre_activation (np.ndarray): 각 유닛의 선형변환 값 (u x 1) 
             next_weights (np.ndarray): 다음 레이어가 가진 파라미터 (o x u)
             next_grads (np.ndarray): 다음 레이어의 에러 시그널 (o x 1)
         """
@@ -90,7 +90,12 @@ class Layer:
             np.transpose(next_weights),  # z x u
             next_grads                   # u x 1
         )                                # z x 1
-        error_signal *= self.activation.derivative(pre_activation)
+        error_signal *= self.activation.derivative(self.cache.pre_activation)
         self.cache.error_signal = error_signal
 
-
+    def create_error_signal(self, loss_function: LossFunction, y_train: np.ndarray):
+        self.cache.error_signal = loss_function.derivative(
+            self.cache.pre_activation,
+            self.activation,
+            y_train
+        )

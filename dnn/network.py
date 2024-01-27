@@ -39,12 +39,36 @@ class Network:
             epoch (int):       데이터셋 반복 학습 횟수 (기본 10)
             learnRate (float): 학습률 (기본 0.001)
         """
-        # 1. 레이어별 pre-activation, output 값을 기록한다.
-        forward_values = zeros((len(self.layers), ))
-        # 2. backpropagation을 위해 레이어별 에러 시그널을 기록한다.
 
-        # 3. 파라미터를 업데이트한다.
+        for _ in range(epoch):
+            for sample in range(x_train.shape[0]):
+                # 1. 레이어별 pre-activation, output 값을 기록한다.
+                input = x_train[sample]
+                for layer in self.layers:
+                    input = layer.forward_pass(input)
+                
+                # 2. backpropagation: 레이어별 에러 시그널을 기록한다.
+                self.layers[-1].create_error_signal(
+                    self.loss,
+                    y_train[sample]
+                )
+                for i in range(len(self.layers)-2, 0, -1):
+                    self.layers[i].backpropagation(
+                        self.layers[i+1].weights,
+                        self.layers[i+1].cache.error_signal
+                    )
 
+                # 3. 파라미터를 업데이트한다.
+                # TODO: Vectorize
+
+
+    def predict(self, sample):
+        output = sample
+        for layer in self.layers:
+            output = layer.forward_pass(output)
+
+        return output
 
     def test_accuracy(self, x_test: ndarray, y_test: ndarray):
-        pass
+        correct = 0
+        
