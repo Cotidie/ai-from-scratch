@@ -15,6 +15,10 @@ A simple Deep Neural Network that classifies MNIST digit images(28 x 28 pixels) 
 </p>
 
 ## Possible Improvements
+- [#2 Learning Rate Optimizer](https://github.com/Cotidie/ai-from-scratch/issues/2)
+- [#3 Ridge Regularization](https://github.com/Cotidie/ai-from-scratch/issues/3)
+- [#4 Parameter Initializer](https://github.com/Cotidie/ai-from-scratch/issues/4)
+
 
 ## Background
 For theoritical background, please refer to those pdf docs directly exported from my personal Notion. They are largely based on the books [Deep Learning: Foundations and Concepts](https://www.bishopbook.com/) by Hugh Bishop and [Understanding Deep Learning](https://udlbook.github.io/udlbook/) By Simon J.D. Prince.
