@@ -1,7 +1,7 @@
 # Deep Neural Network
 ## Overview
 <p align="center">
-	<img src="./images/readme-structure.png" width="600"/><br>
+	<img src="./images/readme-overview-structure.png" width="600"/><br>
     <span style="font-size: 10pt; color: grey">
     < source: <a href="galliot.us"> galliot.us </a>  >
     </span>
@@ -11,7 +11,7 @@ A simple Deep Neural Network that classifies MNIST digit images(28 x 28 pixels) 
 
 ## Structure
 <p align="center">
-	<img src="./images/readme-dnn-structure.png" width="600"/>
+	<img src="./images/readme-dnn-class-diagram.png" width="600"/>
 </p>
 
 ## Possible Improvements
