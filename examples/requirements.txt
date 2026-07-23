@@ -1,0 +1,5 @@
+# MNIST fully-connected classifier (Keras/TensorFlow) — mnist_fc_keras.ipynb
+# Keras ships inside tensorflow (tf.keras), so no separate keras pin needed.
+tensorflow>=2.21.0
+matplotlib>=3.10.9
+numpy>=2.4.5
